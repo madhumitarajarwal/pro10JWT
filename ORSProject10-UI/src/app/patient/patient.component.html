@@ -1,0 +1,159 @@
+<app-navbar></app-navbar>
+<style>
+  .grad {
+    background-image: linear-gradient(to bottom right, #001a33(32, 168, 168), rgb(219, 231, 237));
+    background-repeat: no-repeat;
+    background-size: 100%;
+    padding-bottom: 25px;
+  }
+
+  .log1 {
+    padding-top: 13%;
+  }
+
+  .input-group-addon {
+    box-shadow: 9px 8px 7px #001a33;
+  }
+
+  .required-field {
+    color: red;
+    font-weight: bold;
+  }
+
+  .alertRedColor {
+    color: red;
+  }
+
+  .card-body {
+    padding: 2rem;
+  }
+
+  .input-group-text i {
+    width: 1.5rem;
+  }
+
+  .btn-primary,
+  .btn-success,
+  .btn-warning {
+    width: 100%;
+  }
+
+  .form-control {
+    height: calc(2.25rem + 2px);
+  }
+</style>
+
+<div class="row" style="
+  padding: 2% 0;
+  background: url('assets/files/1027.jpg') no-repeat center center;
+  background-attachment: fixed;
+  background-size: cover;
+  width: 100%;
+  height: auto;">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-body input-group-addon grad">
+        <form name="userForm">
+          <h2 *ngIf="!form.data.id" class="text-primary font-weight-bold text-center">{{ 'Add Patient' | translate }}
+          </h2>
+          <h2 *ngIf="form.data.id" class="text-primary font-weight-bold text-center">{{ 'Update Patient' | translate }}
+          </h2>
+
+          <div *ngIf="!form.error && form.message" class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+
+          <div *ngIf="form.error && form.message" class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ form.message }}
+          </div>
+          <div class="form-group">
+            <label><b>{{ ' Name' | translate }}</b><span class="required-field">*</span></label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fa fa-envelope grey-text"></i></div>
+              </div>
+              <input type="text" name="Name" [(ngModel)]="form.data.name" class="form-control"
+                placeholder="{{ 'Enter Name' | translate }}">
+            </div> <span *ngIf="form.inputerror!=name" class="alertRedColor">{{form.inputerror.name}}</span>
+          </div>
+
+          <div class="form-group">
+            <label><b>{{ ' Mobile' | translate }}</b><span class="required-field">*</span></label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fa fa-envelope grey-text"></i></div>
+              </div>
+              <input type="text" name="Mobile" maxlength="10" [(ngModel)]="form.data.mobile" class="form-control"
+                placeholder="{{ 'Enter mobileNo' | translate }}">
+            </div> <span *ngIf="form.inputerror!=mobile" class="alertRedColor">{{form.inputerror.mobile}}</span>
+          </div>
+          <div>
+            <span class="pt-2"><b>{{ 'dateOfVisit' | translate }}</b><span class="required-field">*</span></span>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fa fa-table grey-text"></i></div>
+              </div>
+              <input type="date" name="dateOfVisit" [value]="form.data.dateOfVisit | date:'yyyy-MM-dd'"
+                     (input)="form.data.dateOfVisit = parseDate($event.target.value)" class="form-control form-control-sm" required />
+            </div>
+          </div>
+          <span *ngIf="form.inputerror.dateOfVisit != null" class="alertRedColor" style="color: red;">
+            {{ form.inputerror.dateOfVisit }}
+          </span>
+          
+          
+            <div class="form-group">
+              <label><b>{{ 'Decease' | translate }}</b><span class="required-field">*</span></label>
+          
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-user grey-text"></i> </div>
+                </div>
+                <select class="form-control" name="decease" [(ngModel)]="form.data.decease" aria-label="ngSelected"
+                  required>
+                  <option [ngValue]="undefined">{{ 'Select doctor' | translate }}</option>
+                  <option value="Heart">{{ 'Heart' | translate }}</option>
+                  <option value="Brain">{{ 'Brain' | translate }}</option>
+                  <option value="Liver">{{ 'Liver' | translate }}</option>
+                </select>
+
+
+
+
+                <!-- <select class="form-control" name="decease" [(ngModel)]="form.data.decease"
+                  aria-label="ngSelected">
+                  <option [ngValue]="" value="undefined">{{' Select Decease' | translate }}</option>
+                  <option *ngFor="let obj of form.preload.pList | keyvalue " [value]="obj.key">{{obj.value}}</option>
+                </select> -->
+              </div>
+            </div>
+            <span *ngIf="form.inputerror.decease != null" class="alertRedColor" style=" color: red;">
+              {{form.inputerror.decease}} </span>
+            
+        
+
+          
+              
+          <div class="row pt-2 pb-3 justify-content-center">
+            <div class="col-md-4">
+              <button *ngIf="!form.data.id" (click)="onUpload()" class="btn btn-success">{{ 'Save' | translate
+                }}</button>
+            </div>
+            <div class="col-md-4">
+              <button *ngIf="form.data.id" (click)="onUpload()" class="btn btn-success">{{ 'Update' | translate
+                }}</button>
+            </div>
+            <div class="col-md-4">
+              <a class="btn btn-warning" type="button" [routerLink]="['/patientlist']">{{ 'List' | translate }}</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4"></div>
+</div>
+<app-footer></app-footer>
