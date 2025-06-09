@@ -19,11 +19,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/Auth/**", "/User/profilePic/**").permitAll()
-				.anyRequest().authenticated().and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	    http.csrf().disable()
+	        .authorizeRequests()
+	            .antMatchers("/Auth/**", "/User/profilePic/**", "/actuator/health", "/actuator/info").permitAll()  // allow actuator health and info
+	            .anyRequest().authenticated()
+	        .and()
+	        .sessionManagement()
+	            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-		http.cors();
+	    http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	    http.cors();
 	}
+
 }
